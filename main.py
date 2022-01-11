@@ -5,6 +5,7 @@ import re
 from datetime import date, timedelta,datetime
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import os
 
 weburl = sys.argv[1]
 anvato_id = sys.argv[2]
@@ -64,6 +65,8 @@ try:
     driver.get(weburl)
     time.sleep(2)
     pageSource = driver.page_source
+    driver.close()
+    os.system("pkill chrome")
     soup = BeautifulSoup(pageSource, 'lxml')
     meta = soup.find(attrs={"name":"news_keywords"})['content']
     keywords = meta.split(',')
@@ -81,6 +84,3 @@ except:
     print('except' + weburl)
 
 conn.close()
-driver.close()
-import os
-os.system("pkill chrome")
